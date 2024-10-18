@@ -1,12 +1,11 @@
 import './App.css'
 
-function App() {
-  
-
+function App() { 
   return (
-    <> 
-      <h1>Dynamic JSON Form app</h1>
-       
+    <>  
+      <h1 className="text-3xl font-bold underline">
+        Dynamic JSON Form App
+      </h1>
     </>
   )
 }
