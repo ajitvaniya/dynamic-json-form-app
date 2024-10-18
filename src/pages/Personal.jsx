@@ -1,12 +1,15 @@
 import  { useState,useEffect  } from 'react';
 import formJson from '../data/formdata.json'; 
 import InputComponent from '../components/UI/InputComponent';
+import { Col, Row } from 'react-bootstrap';
+import ScrollToSection from './elements/ScrollToSection';
 
 
 function Personal() {
     const [formData, setFormData] = useState(localStorage.getItem('applicantDetails')?JSON.parse(localStorage.getItem('applicantDetails')):{});
     const [errors, setErrors] = useState({});
     const [isFormValid, setIsFormValid] = useState(false);
+    const [image, setImage] = useState(localStorage.getItem('profilePhoto') ? localStorage.getItem('profilePhoto'): null);
 
     const handleInputChange = (e,checkboxOption={},typefield='') => {
         const { name, value, type, checked } = e.target;
@@ -68,20 +71,56 @@ function Personal() {
         alert('data saved successfully...!')
     }
 
+
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => { 
+                localStorage.setItem('profilePhoto', reader.result);
+                setImage(URL.createObjectURL(file)); 
+            };
+            reader.readAsDataURL(file);
+        }
+    }; 
+
     useEffect(() => {
         validateForm();
-      }, [formData]);
+    }, [formData]); 
+    
+   
 
-      console.log(`formData--->`,formData)
 
     return (
         <>
             <div className="bg-white shadow-md rounded-lg p-6">
-                <h1 className="text-3xl font-bold mb-6">{formJson.form.title}</h1>
-                <p className="mb-6 text-gray-600">{formJson.form.description}</p>
+              
 
+
+                <ScrollToSection />
+
+
+                <h1 className="text-3xl font-bold mb-6 mt-5">{formJson.form.title}</h1>
+                <p className="mb-6 text-gray-600">{formJson.form.description}</p>
+                <div key={`profile_photo`} className="mb-8"> 
+                        <h2 className="text-2xl font-semibold mb-4">Profile Image</h2>
+
+                        <Row>
+                            
+                            <Col md={2}>
+                            <input type="file" accept="image/*" onChange={handleFileChange} /> 
+                            </Col> 
+                            {image  && ( 
+                                <Col md={8}> 
+                                        <img src={image} alt="Profile" style={{ width: '60px', height: '60px', borderRadius: '60px' }} /> 
+                                </Col> 
+                            )}
+                        </Row>  
+                </div>
+                
                 {formJson.form.groups.map((group, groupIndex) => (
-                    <div key={groupIndex} className="mb-8">
+                    <div key={groupIndex} className="mb-8" id={`${group.title}`}>
                         <h2 className="text-2xl font-semibold mb-4">{group.title}</h2>
                         <div className="grid grid-cols-2 gap-4">
                             {group.fields.map((field, fieldIndex) => {

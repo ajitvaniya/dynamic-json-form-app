@@ -23,14 +23,14 @@ function Employment() {
         <>
             <div className="bg-white shadow-md rounded-lg p-6 flex flex-col gap-[20px]">
                 {
-                    !groupData ?
+                     Object.keys(applicantData) < 1 ?
                     <p>Please fill personal details: <Link to='/'>click here</Link></p>
                 :
                         <>
                             {
                                 groupData.fields.map((field, index) => {
                                     let fieldValues =[];
-                                    if(field?.options && field.type ==='checkbox'){ 
+                                    if(field?.options && field.type ==='checkbox' && applicantData[field?.name]){ 
                                         let values = Object.keys(applicantData[field?.name]);
                                         let filterOptions= field?.options.filter((option)=> {
                                             if(values.includes(option.value)){
@@ -39,7 +39,7 @@ function Employment() {
                                             return option;
                                         }) 
                                     }
-                                    if(field?.options && field.type ==='radio'){ 
+                                    if(field?.options && field.type ==='radio' && applicantData[field?.name]){ 
                                         let filterOptions= field?.options.filter((option)=> {
                                             if(applicantData[field?.name] === option.value){
                                                 fieldValues.push(option.label);
