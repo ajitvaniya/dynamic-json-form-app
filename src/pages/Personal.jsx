@@ -8,11 +8,14 @@ function Personal() {
     const [errors, setErrors] = useState({});
     const [isFormValid, setIsFormValid] = useState(false);
 
-    const handleInputChange = (e,checkboxOption={}) => {
+    const handleInputChange = (e,checkboxOption={},typefield='') => {
         const { name, value, type, checked } = e.target;
-
-        if (type === "checkbox") {
-            console.log(`checkbox`,{ name, value, type, checked },checkboxOption.value);
+        if (typefield === "radio") { 
+            setFormData({
+                ...formData,
+                [name]:checkboxOption.value,
+            }); 
+        }else if (type === "checkbox") { 
             setFormData({
                 ...formData,
                 [name]: {

@@ -1,9 +1,6 @@
 const InputComponent=({formData={},field={},fieldIndex=0,handleInputChange,errors={}})=>{ 
 
-    if(field.name==='subjects'){
-        console.log(`subjects----->`,Object.keys(formData[field.name]));
-        console.log(`field.options`,field.options)
-    }
+    
     switch (field.type) {
         case "text":
             return (
@@ -99,8 +96,8 @@ const InputComponent=({formData={},field={},fieldIndex=0,handleInputChange,error
                                 <input
                                     type="radio"
                                     name={field.name}
-                                    value={option.value?true:false}
-                                    onChange={handleInputChange}
+                                    checked={formData[field.name] === option.value }   
+                                    onChange={(e)=>handleInputChange(e,option,'radio')}
                                     className="form-radio"
                                 />
                                 <span className="ml-2">{option.label}</span>
@@ -122,7 +119,7 @@ const InputComponent=({formData={},field={},fieldIndex=0,handleInputChange,error
                                 <input
                                     type="checkbox"
                                     name={field.name}
-                                    checked={Object.keys(formData[field.name]).includes(option.value)?true:false}
+                                    checked={formData[field.name] && Object.keys(formData[field.name]).includes(option.value)?true:false}
                                     onChange={(e)=>handleInputChange(e,option)}
                                     className="form-checkbox"
                                 />
